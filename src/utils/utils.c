@@ -39,3 +39,27 @@ void	ft_putnbr_fd(int n, int fd)
 		write (fd, &nb, 1);
 	}
 }
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+bool	check_null(char *str)
+{
+	if (str[0] == '\0')
+		return (true);
+	return (false);
+}
+
+bool	check_digits(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (true);
+	return (false);
+}

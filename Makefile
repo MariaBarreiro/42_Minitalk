@@ -31,14 +31,18 @@ CLIENT_FILES								= client.c
 UTILS_PATH									= $(SRC_PATH)utils/
 
 UTILS_FILES									= utils.c
+UTILS_FILES									+= utils2.c
 
-SRC													= $(addprefix $(SRC_PATH), $(SRC_FILES))
-SRC													+= $(addprefix $(SERVER_PATH), $(SERVER_FILES))
-SRC													+= $(addprefix $(CLIENT_PATH), $(CLIENT_FILES))C													+= $(addprefix $(CLIENT_PATH), $(CLIENT_FILES))
-SRC													+= $(addprefix $(UTILS_PATH), $(UTILS_FILES))
+SRC																	= $(addprefix $(UTILS_PATH), $(UTILS_FILES))
+SRC_SERVER													= $(addprefix $(SERVER_PATH), $(SERVER_FILES))
+SRC_SERVER													+= $(SRC)
+SRC_CLIENT													= $(addprefix $(CLIENT_PATH), $(CLIENT_FILES))
+SRC_CLIENT													+= $(SRC)
 
-OBJS_DIR										= obj
-OBJS												= $(patsubst %.c, $(OBJS_DIR)/%.o, $(SRC))
+CLIENT_OBJS_DIR										= obj_client
+SERVER_OBJS_DIR										= obj_server
+CLIENT_OBJS												= $(patsubst %.c, $(CLIENT_OBJS_DIR)/%.o, $(SRC_CLIENT))
+SERVER_OBJS												= $(patsubst %.c, $(SERVER_OBJS_DIR)/%.o, $(SRC_SERVER))
 
 # **************************************************************************** #
 #                                   Compiler                                   #
@@ -58,26 +62,39 @@ RM              = rm -rf
 #                                    Rules                                     #
 # **************************************************************************** #
  
-all: $(NAME)
+all: $(CLIENT_NAME) $(SERVER_NAME)
 
-$(OBJS_DIR):
-	@mkdir -p obj
-	@echo "📋 Objects directory created!"
+$(CLIENT_OBJS_DIR):
+	@mkdir -p obj_client
+	@echo "📋 Client objects directory created!"
 
-$(OBJS_DIR)/%.o: %.c
+$(CLIENT_OBJS_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
-$(NAME): $(OBJS_DIR) $(OBJS)
-	@$(CC) $(CFLAGS) $(INC) $(OBJS) -o $(NAME)
-	@echo "🤎 Compilation completed!"
+$(SERVER_OBJS_DIR):
+	@mkdir -p obj_server
+	@echo "📋 Server objects directory created!"
+
+$(SERVER_OBJS_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
+
+$(CLIENT_NAME): $(CLIENT_OBJS_DIR) $(CLIENT_OBJS)
+	@$(CC) $(CFLAGS) $(INC) $(CLIENT_OBJS) -o $(CLIENT_NAME)
+	@echo "🤎 Client compilation completed!"
+
+$(SERVER_NAME): $(SERVER_OBJS_DIR) $(SERVER_OBJS)
+	@$(CC) $(CFLAGS) $(INC) $(SERVER_OBJS) -o $(SERVER_NAME)
+	@echo "🤎 Server compilation completed!"
 
 clean:
-	@$(RM) $(OBJS)
+	@$(RM) $(SERVER_OBJS) $(CLIENT_OBJS)
 	@echo "🌷 Objects removed successfully!"
 
 fclean: clean
-	@$(RM) $(NAME) $(OBJS_DIR)
+	@$(RM) $(CLIENT_NAME) $(CLIENT_OBJS_DIR)
+	@$(RM) $(SERVER_NAME) $(SERVER_OBJS_DIR)
 	@echo "✨ Program removed successfully!"
 
 re: fclean all
