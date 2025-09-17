@@ -11,6 +11,8 @@ SHELL = bash
 
 CLIENT_NAME = client 
 SERVER_NAME = server
+CLIENT_NAME_BONUS = client_bonus 
+SERVER_NAME_BONUS = server_bonus
 
 # **************************************************************************** #
 #                                    Paths                                     #
@@ -64,6 +66,8 @@ RM              = rm -rf
  
 all: $(CLIENT_NAME) $(SERVER_NAME)
 
+bonus: $(CLIENT_NAME_BONUS) $(SERVER_NAME_BONUS)
+
 $(CLIENT_OBJS_DIR):
 	@mkdir -p obj_client
 	@echo "📋 Client objects directory created!"
@@ -88,6 +92,14 @@ $(SERVER_NAME): $(SERVER_OBJS_DIR) $(SERVER_OBJS)
 	@$(CC) $(CFLAGS) $(INC) $(SERVER_OBJS) -o $(SERVER_NAME)
 	@echo "🤎 Server compilation completed!"
 
+$(CLIENT_NAME_BONUS): $(CLIENT_OBJS_DIR) $(CLIENT_OBJS)
+	@$(CC) $(CFLAGS) $(INC) $(CLIENT_OBJS) -o $(CLIENT_NAME_BONUS)
+	@echo "🤎 Bonus_client compilation completed!"
+
+$(SERVER_NAME_BONUS): $(SERVER_OBJS_DIR) $(SERVER_OBJS)
+	@$(CC) $(CFLAGS) $(INC) $(SERVER_OBJS) -o $(SERVER_NAME_BONUS)
+	@echo "🤎 Bonus_server compilation completed!"
+
 clean:
 	@$(RM) $(SERVER_OBJS) $(CLIENT_OBJS)
 	@echo "🌷 Objects removed successfully!"
@@ -95,6 +107,8 @@ clean:
 fclean: clean
 	@$(RM) $(CLIENT_NAME) $(CLIENT_OBJS_DIR)
 	@$(RM) $(SERVER_NAME) $(SERVER_OBJS_DIR)
+	@$(RM) $(CLIENT_NAME_BONUS) $(CLIENT_OBJS_DIR)
+	@$(RM) $(SERVER_NAME_BONUS) $(SERVER_OBJS_DIR)
 	@echo "✨ Program removed successfully!"
 
 re: fclean all

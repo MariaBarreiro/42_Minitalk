@@ -12,6 +12,8 @@
 
 #include "../../includes/minitalk.h"
 
+#include <stdio.h>
+
 int	main(void)
 {
 	pid_t				server_pid;
@@ -19,6 +21,7 @@ int	main(void)
 
 	server_pid = getpid();
 	action.sa_flags = SA_SIGINFO;
+	sigemptyset(&action.sa_mask);
 	action.sa_sigaction = handle_sig;
 
 	sigaction(SIGUSR1, &action, NULL);
@@ -26,11 +29,9 @@ int	main(void)
 
 	ft_putstr_fd("Server PID: ", 1);
 	ft_putnbr_fd(server_pid, 1);
-	ft_putstr_fd("\n", 1);
-
+	ft_putstr_fd("", 1);
 	while (1)
 		pause();
-
 	return (0);
 }
 
@@ -43,13 +44,13 @@ void	handle_sig(int sig, siginfo_t *info, void *ctx)
 	(void) ctx;
 	if (sig == SIGUSR1 || sig == SIGUSR2)
 		if (sig == SIGUSR1)
-			current_char = current_char | (1 << current_bit);
+			current_char |= (1 << current_bit);
 	current_bit++;
 	if (current_bit == 8)
 	{
 		if (current_char == '\0')
 		{
-			ft_putstr_fd(message, 1);
+			ft_putstr_fd(message, 2);
 			free(message);
 			message = NULL;
 			kill(info->si_pid, SIGUSR2);

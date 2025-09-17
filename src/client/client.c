@@ -12,11 +12,16 @@
 
 #include "../../includes/minitalk.h"
 
+
+#include <signal.h>
+#include <stdio.h>
+
 int	main(int ac, char **av)
 {
 	size_t				i;
 	struct sigaction	action;
 
+	sigemptyset(&action.sa_mask);
 	action.sa_flags = SA_SIGINFO;
 	action.sa_sigaction = sig_handler;
 	sigaction(SIGUSR1, &action, NULL);
@@ -52,12 +57,10 @@ void	sig_handler(int sig, siginfo_t *info, void *context)
 
 void	send_message(int pid, char *message)
 {
-	static int	i;
+	static int	i = 0;
 	static char	*temp_message;
-	static int	bit;
+	static int	bit = 0;
 
-	i = 0;
-	bit = 0;
 	if (message != NULL)
 		temp_message = message;
 	if (temp_message[i] != 0)
@@ -67,7 +70,7 @@ void	send_message(int pid, char *message)
 		{
 			bit = 0;
 			i++;
-		}
+		}		
 	}
 	else
 	{
@@ -81,7 +84,7 @@ void	send_message(int pid, char *message)
 
 void	send_char(char c, int current_bit, int pid)
 {
-	if (((c >> current_bit) & 1) == 1)
+	if ((((c >> current_bit) & 1) && 1) == 1)
 		kill(pid, SIGUSR1);
 	else
 		kill (pid, SIGUSR2);

@@ -14,6 +14,7 @@ void	ft_putstr_fd(char *s, int fd)
 		write (fd, &s[i], 1);
 		i++;
 	}
+	write(1, "\n", 1);
 }
 
 void	ft_putnbr_fd(int n, int fd)
@@ -37,7 +38,7 @@ void	ft_putnbr_fd(int n, int fd)
 	{
 		nb += '0';
 		write (fd, &nb, 1);
-	}
+	}		
 }
 
 size_t	ft_strlen(const char *str)
