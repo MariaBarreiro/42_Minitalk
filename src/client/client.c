@@ -6,12 +6,11 @@
 /*   By: mda-enca <mda-enca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 15:59:16 by mda-enca          #+#    #+#             */
-/*   Updated: 2025/09/14 18:14:28 by mda-enca         ###   ########.fr       */
+/*   Updated: 2025/09/18 17:12:24 by mda-enca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minitalk.h"
-
 
 #include <signal.h>
 #include <stdio.h>
@@ -40,17 +39,19 @@ int	main(int ac, char **av)
 		send_message(ft_atoi(av[1]), av[2]);
 	}
 	else
-		return (ft_putstr_fd("./client [Pid_Server] [Message]\n", 2), 1);
+		return (ft_putstr_fd("./client [Pid_Server] [Message]", 2), 1);
 	while (1)
 		pause();
-	return (0);
 }
 
 void	sig_handler(int sig, siginfo_t *info, void *context)
 {
 	(void) context;
 	if (sig == SIGUSR2)
+	{
+		ft_putstr_fd("Message received!", 1);
 		exit (EXIT_SUCCESS);
+	}
 	if (sig == SIGUSR1)
 		send_message(info->si_pid, NULL);
 }
@@ -70,7 +71,7 @@ void	send_message(int pid, char *message)
 		{
 			bit = 0;
 			i++;
-		}		
+		}
 	}
 	else
 	{

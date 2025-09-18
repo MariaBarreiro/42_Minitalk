@@ -14,19 +14,20 @@
 
 #include <stdio.h>
 
-int	main(void)
+int	main(int ac, char **av)
 {
 	pid_t				server_pid;
 	struct sigaction	action;
 
+	(void) av;
 	server_pid = getpid();
 	action.sa_flags = SA_SIGINFO;
 	sigemptyset(&action.sa_mask);
 	action.sa_sigaction = handle_sig;
-
 	sigaction(SIGUSR1, &action, NULL);
 	sigaction(SIGUSR2, &action, NULL);
-
+	if (ac != 1)
+		return (1);
 	ft_putstr_fd("Server PID: ", 1);
 	ft_putnbr_fd(server_pid, 1);
 	ft_putstr_fd("", 1);
@@ -72,11 +73,7 @@ char	*add_char(char *initial_str, char char_to_add, int pid)
 
 	i = 0;
 	if (initial_str == NULL)
-	{
-		new_str = (char *)malloc(sizeof(char));
-		new_str[0] = '\0';
 		len = 0;
-	}
 	else
 		len = ft_strlen(initial_str);
 	new_str = (char *)malloc((len + 2) * sizeof(char));

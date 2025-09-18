@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minitalk.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mda-enca <mda-enca@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/18 17:07:42 by mda-enca          #+#    #+#             */
+/*   Updated: 2025/09/18 17:08:04 by mda-enca         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINITALK_H
 # define MINITALK_H
 
@@ -6,7 +18,6 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <bits/types.h>
-
 
 //Utils//
 void	ft_putstr_fd(char *s, int fd);
